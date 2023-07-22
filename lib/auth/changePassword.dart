@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:front/theme/color.dart';
+import 'package:DouxRes/theme/color.dart';
 import '../home/home_page.dart';
 import '../service/auth_service.dart';
-import '../main.dart';
+import 'log_in.dart';
 
 class changePasswordPage extends StatefulWidget {
   final TextEditingController nameController;

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const url = 'http://192.168.1.115:5000';
+const url = 'http://192.168.1.115:3000';
 final uri = Uri.parse(url);
 final headers = {
   'Content-Type': 'application/json',

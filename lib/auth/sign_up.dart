@@ -1,8 +1,9 @@
-import 'package:front/service/auth_service.dart';
-import 'package:front/main.dart';
+import 'package:DouxRes/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../theme/color.dart';
-import 'package:front/theme/auth_templets.dart';
+import 'package:DouxRes/theme/auth_templets.dart';
+
+import 'log_in.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front/service/auth_service.dart';
+import 'package:DouxRes/service/auth_service.dart';
 
 import '../theme/auth_templets.dart';
 import '../theme/color.dart';
