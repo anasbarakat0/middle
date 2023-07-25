@@ -5,12 +5,18 @@ import 'home/home_page.dart';
 
 void main() => runApp(MyApp());
 
+var token;
+bool isAuthenticated = false;
+String Id = '';
+String userName = '';
+String phone = '';
+String address = '';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool isAuthenticated = false;
     return MaterialApp(
       title: 'DouxRes',
       theme: ThemeData(
@@ -19,8 +25,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       // routerDelegate: const StartPage(),
-      home: isAuthenticated? StartPage():HomePage(),
+      home: isAuthenticated ? const HomePage() : const StartPage(),
     );
   }
 }
-

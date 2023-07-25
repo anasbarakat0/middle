@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:DouxRes/auth/verificationPage.dart';
-import 'package:DouxRes/theme/color.dart';
-import 'package:DouxRes/theme/auth_templets.dart';
+import 'package:front/auth/verificationPage.dart';
+import 'package:front/theme/color.dart';
+import 'package:front/theme/auth_templets.dart';
 import '../service/auth_service.dart';
 import 'log_in.dart';
 

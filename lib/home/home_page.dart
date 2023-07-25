@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:front/home/profile.dart';
+import 'package:front/main.dart';
 import '../auth/log_in.dart';
 import '../theme/color.dart';
-import '../service/auth_service.dart';
 import '../theme/home_templets.dart';
 
 class HomePage extends StatefulWidget {
@@ -105,7 +106,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    Text('${getUser()}'),
+                    Text('${userName}'),
                   ],
                 ),
               ),
@@ -114,7 +115,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 title: 'Profile',
                 icon: Icons.person,
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => profilePage()),
+                  );
                 }),
             leadingButtons(
                 title: 'Contact Us',
@@ -126,6 +130,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 title: 'Log Out',
                 icon: Icons.logout_rounded,
                 onTap: () {
+                  isAuthenticated = false;
+                  Id = '';
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const StartPage()),
@@ -141,8 +147,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             _tabController.jumpToPage(1);
           });
         },
-        backgroundColor: _currentIndex ==1 ?AppColors.red: AppColors.white,
-        foregroundColor: _currentIndex ==1 ?AppColors.white: AppColors.grey,
+        backgroundColor: _currentIndex == 1 ? AppColors.red : AppColors.white,
+        foregroundColor: _currentIndex == 1 ? AppColors.white : AppColors.grey,
         child: Icon(Icons.home),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -301,4 +307,3 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 }
-

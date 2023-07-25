@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:DouxRes/service/auth_service.dart';
+import 'package:front/service/auth_service.dart';
 
 import '../theme/auth_templets.dart';
 import '../theme/color.dart';
 import 'changePassword.dart';
 import 'forgetPassword.dart';
-
 
 class verificationPage extends StatefulWidget {
   final TextEditingController nameController;
@@ -139,22 +138,24 @@ class _verificationPageState extends State<verificationPage> {
                       ),
                 onPressed: areAllDigitsFilled()
                     ? () async {
-                        var status = await changePassword(widget.phoneController.text,
-                            getCode(), widget.nameController.text);
-                            if (status[0] == true){
-                              Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => changePasswordPage(
-                                nameController: widget.nameController,
-                                    phoneController: widget.phoneController, code: getCode(),
-                              )),
-                        );
-                            }
-                            else{
-                               ScaffoldMessenger.of(context).showSnackBar(
-                            new SnackBar(content: Text("$status")));
-                            }
+                        var status = await changePassword(
+                            widget.phoneController.text,
+                            getCode(),
+                            widget.nameController.text);
+                        if (status[0] == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => changePasswordPage(
+                                      nameController: widget.nameController,
+                                      phoneController: widget.phoneController,
+                                      code: getCode(),
+                                    )),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              new SnackBar(content: Text("$status")));
+                        }
                       }
                     : null,
                 child: Text(

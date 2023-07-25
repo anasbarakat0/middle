@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:DouxRes/auth/sign_up.dart';
+import 'package:front/auth/sign_up.dart';
+import '../main.dart';
 import '../theme/color.dart';
 import '../service/auth_service.dart';
 import '../auth/forgetPassword.dart';
 import '../home/home_page.dart';
-
 
 TextEditingController name = TextEditingController();
 TextEditingController password = TextEditingController();
@@ -26,6 +26,7 @@ class _StartPageState extends State<StartPage> {
 
     if (status == true) {
       print('status: $status');
+      isAuthenticated = true;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
