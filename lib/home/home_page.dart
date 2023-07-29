@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/home/contact.dart';
 import 'package:front/home/profile.dart';
 import 'package:front/main.dart';
 import '../auth/log_in.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       name: 'Restaurant 1',
       address: 'Address 1',
       workingHours: '9:00 AM - 10:00 PM',
-      catigory: ['Description 1', 'Description 2', 'Description 3'],
+      catigory: const ['Description 1', 'Description 2', 'Description 3'],
     ),
     RestaurantWidget(
       image: 'images/restaurant.jpg',
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       name: 'Restaurant 2',
       address: 'Address 2',
       workingHours: '9:00 AM - 10:00 PM',
-      catigory: [
+      catigory: const [
         'Description 1',
         'Description 2',
         'Description 3',
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: AppBar(
         title: Text(
           _title,
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         backgroundColor: AppColors.red,
         foregroundColor: AppColors.white,
@@ -75,9 +76,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     AppColors.redLight,
                     AppColors.red,
                   ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  transform: const GradientRotation(-45 * 0.0174533),
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                 ),
               ),
               child: Padding(
@@ -89,24 +89,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                        ),
+                          width: 80,
+                          height: 80,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: Image.asset('images/DeuxRes.png')),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text(
+                        'Wellcome',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 25),
                       ),
                     ),
-                    const Text(
-                      'Wellcome',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        userName,
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     ),
-                    Text('${userName}'),
                   ],
                 ),
               ),
@@ -117,14 +121,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => profilePage()),
+                    MaterialPageRoute(builder: (context) => const profilePage()),
                   );
                 }),
             leadingButtons(
                 title: 'Contact Us',
                 icon: Icons.contact_support,
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const contactPage()),
+                  );
                 }),
             leadingButtons(
                 title: 'Log Out',
@@ -153,7 +160,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         },
         backgroundColor: _currentIndex == 1 ? AppColors.red : AppColors.white,
         foregroundColor: _currentIndex == 1 ? AppColors.white : AppColors.grey,
-        child: Icon(Icons.home),
+        child: const Icon(Icons.home),
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -170,7 +177,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       _tabController.jumpToPage(0);
                     });
                   },
-                  icon: Icon(Icons.date_range_rounded),
+                  icon: const Icon(Icons.date_range_rounded),
                   color: _currentIndex == 0 ? AppColors.red : AppColors.grey,
                 ),
                 Text(
@@ -181,7 +188,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            SizedBox(),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -242,9 +248,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: SearchBar(
-                    leading: SizedBox(width: 10),
+                    leading: const SizedBox(width: 10),
                     textStyle: MaterialStateProperty.all<TextStyle>(
-                      TextStyle(fontSize: 20),
+                      const TextStyle(fontSize: 20),
                     ),
                     hintText: 'Search',
                     trailing: [
@@ -252,7 +258,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         Icons.search,
                         color: AppColors.grey,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                     ],
                   ),
                 ),

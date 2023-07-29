@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 
-const url = 'http://localhost:3000';
+const url = 'http://192.168.1.115:3000';
 final uri = Uri.parse(url);
 final headers = {
   'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ login(String phone, String password) async {
       print('Token: $token');
       print('Id: $Id');
       getData();
-      return true;
+            return true;
     } else {
       final responseBody = json.decode(response.body);
       final message = responseBody['message'];
@@ -128,11 +128,11 @@ Future<void> fetchRestaurants() async {
 forgetPassword(String name, String phone) async {
   final uri = Uri.parse('$url/forgot-password');
   final body = jsonEncode({'name': name, 'phone': phone});
-  final response = await http.post(uri, headers: headers, body: body);
+final response = await http.post(uri, headers: headers, body: body);
   final responseBody = json.decode(response.body);
   final message = responseBody['message'];
   if (response.statusCode == 200) {
-    print('200');
+      print('200');
     print(message);
     return [true, message];
   } else {

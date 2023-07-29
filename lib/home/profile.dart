@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front/home/home_page.dart';
-import 'package:image_picker/image_picker.dart';
 import '../main.dart';
 import '../service/profile_service.dart';
 import '../theme/color.dart';
@@ -13,7 +12,6 @@ class profilePage extends StatefulWidget {
 }
 
 class _profilePageState extends State<profilePage> {
-  final ImagePicker _picker = ImagePicker();
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -29,12 +27,6 @@ class _profilePageState extends State<profilePage> {
     addressController.text = address;
   }
 
-  @override
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(
-      source: source,
-    );
-  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,7 +140,7 @@ class _profilePageState extends State<profilePage> {
                     );
                   } else {
                     _scaffoldMessengerKey.currentState?.showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text("Connection refused"),
                       ),
                     );

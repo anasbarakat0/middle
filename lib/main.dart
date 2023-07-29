@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColors.red,
       ),
       debugShowCheckedModeBanner: false,
-      // routerDelegate: const StartPage(),
       home: isAuthenticated ? const HomePage() : const StartPage(),
     );
   }

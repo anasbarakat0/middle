@@ -31,7 +31,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           alignment: Alignment.centerLeft,
           child: Text(
             widget.text,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 20,
             ),
@@ -116,8 +116,8 @@ class DigitBox extends StatelessWidget {
             filled: true,
             fillColor: Colors.white,
           ),
-          showCursor: false,
-          style: TextStyle(
+            showCursor: false,
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
