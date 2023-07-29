@@ -25,6 +25,7 @@ class _StartPageState extends State<StartPage> {
     var status = await login(name.text, password.text);
 
     if (status == true) {
+      print("loged in success");
       print('status: $status');
       isAuthenticated = true;
       Navigator.pushReplacement(
@@ -32,14 +33,16 @@ class _StartPageState extends State<StartPage> {
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else if (status != true) {
+      print("can't login");
       _scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
           content: Text("$status"),
         ),
       );
     } else {
+      print("Connection refused");
       _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Connection refused"),
         ),
       );

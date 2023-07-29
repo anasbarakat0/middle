@@ -138,24 +138,24 @@ class _verificationPageState extends State<verificationPage> {
                       ),
                 onPressed: areAllDigitsFilled()
                     ? () async {
-                        var status = await changePassword(
+                       var status = await changePassword(
                             widget.phoneController.text,
                             getCode(),
                             widget.nameController.text);
                         if (status[0] == true) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => changePasswordPage(
-                                      nameController: widget.nameController,
-                                      phoneController: widget.phoneController,
-                                      code: getCode(),
-                                    )),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              new SnackBar(content: Text("$status")));
-                        }
+                              Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => changePasswordPage(
+                                nameController: widget.nameController,
+                                    phoneController: widget.phoneController,
+                                    code: getCode(),
+                              )),
+                        );
+                            } else {
+                               ScaffoldMessenger.of(context).showSnackBar(
+                            new SnackBar(content: Text("$status")));
+                            }
                       }
                     : null,
                 child: Text(
