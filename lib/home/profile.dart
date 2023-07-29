@@ -78,23 +78,53 @@ class _profilePageState extends State<profilePage> {
             //name textfield
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Name',
+                labelStyle: TextStyle(
+                  color: AppColors.grey,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.red),
+                ),
               ),
+              cursorColor: AppColors.red,
             ),
             //phone textfield
             TextField(
               controller: phoneController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Phone',
+                labelStyle: TextStyle(
+                  color: AppColors.grey,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.red),
+                ),
               ),
+              cursorColor: AppColors.red,
             ),
             //address textfield
             TextField(
               controller: addressController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Address',
+                labelStyle: TextStyle(
+                  color: AppColors.grey,
+                  fontFamily: 'Cairo',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.red),
+                ),
               ),
+              cursorColor: AppColors.red,
             ),
             Container(
               padding: const EdgeInsets.only(top: 20),

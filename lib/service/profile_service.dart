@@ -14,8 +14,7 @@ Future<dynamic> changeProfileData(
     String name, String phone, String address) async {
   final uri = Uri.parse('$url/users/$Id');
 
-  final body = jsonEncode(
-      {"name": name, "password": '0000', "phone": phone, "address": address});
+  final body = jsonEncode({"name": name, "phone": phone, "address": address});
 
   final response = await http.put(uri, headers: headers, body: body);
 

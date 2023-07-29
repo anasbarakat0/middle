@@ -132,6 +132,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 onTap: () {
                   isAuthenticated = false;
                   Id = '';
+                  userName = '';
+                  phone = '';
+                  address = '';
+                  token = '';
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const StartPage()),

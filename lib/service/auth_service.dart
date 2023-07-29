@@ -35,7 +35,7 @@ login(String phone, String password) async {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      token = '{token: ${responseJson['token']}}';
+      token = '${responseJson['token']}';
       Id = responseJson['id'];
       print('Token: $token');
       print('Id: $Id');
