@@ -116,7 +116,7 @@ class DigitBox extends StatelessWidget {
             filled: true,
             fillColor: Colors.white,
           ),
-            showCursor: false,
+          showCursor: false,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,

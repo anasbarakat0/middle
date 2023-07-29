@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/theme/color.dart';
 import '../home/home_page.dart';
 import '../service/auth_service.dart';
-import '../main.dart';
+import 'log_in.dart';
 
 class changePasswordPage extends StatefulWidget {
   final TextEditingController nameController;
@@ -248,8 +248,10 @@ class _changePasswordPageState extends State<changePasswordPage> {
                         );
                         return;
                       } else {
-                        var status = await changePassword(widget.phoneController.text,
-                            widget.code, passwordController.text);
+                        var status = await changePassword(
+                            widget.phoneController.text,
+                            widget.code,
+                            passwordController.text);
                         if (status[0] == true) {
                           print('status: ${status[1]}');
                           Navigator.pushReplacement(
@@ -257,11 +259,10 @@ class _changePasswordPageState extends State<changePasswordPage> {
                             MaterialPageRoute(
                                 builder: (context) => const HomePage()),
                           );
-                        }
-                        else {
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("pleas try again")),
-                        );
+                            SnackBar(content: Text("pleas try again")),
+                          );
                         }
                       }
                     },

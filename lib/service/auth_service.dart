@@ -1,18 +1,15 @@
 import 'dart:convert';
+import 'package:front/service/profile_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const url = 'http://192.168.1.115:5000';
+import '../main.dart';
+
+const url = 'http://localhost:3000';
 final uri = Uri.parse(url);
 final headers = {
   'Content-Type': 'application/json',
 };
-var token;
-void getData() async {
-  final response = await http.get(uri);
-  final body = response.body;
-  print(body);
-}
 
 class UserLogin {
   late final String phone;
@@ -27,8 +24,6 @@ class UserLogin {
   }
 }
 
-var mainUser;
-
 login(String phone, String password) async {
   final uri = Uri.parse('$url/login');
 
@@ -40,9 +35,11 @@ login(String phone, String password) async {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      mainUser = responseJson['message'];
-      token = '{token: ${responseJson['token']}}';
+      token = '${responseJson['token']}';
+      Id = responseJson['id'];
       print('Token: $token');
+      print('Id: $Id');
+      getData();
       return true;
     } else {
       final responseBody = json.decode(response.body);
@@ -104,10 +101,6 @@ signup(String name, String password, String phone, String address) async {
   }
 }
 
-String? getUser() {
-  return mainUser;
-}
-
 Future<void> fetchRestaurants() async {
   final header = {
     'Authorization': 'Bearer $token',
@@ -135,33 +128,32 @@ Future<void> fetchRestaurants() async {
 forgetPassword(String name, String phone) async {
   final uri = Uri.parse('$url/forgot-password');
   final body = jsonEncode({'name': name, 'phone': phone});
-  final response = await http
-      .post(uri, headers: headers, body: body);
+  final response = await http.post(uri, headers: headers, body: body);
   final responseBody = json.decode(response.body);
   final message = responseBody['message'];
   if (response.statusCode == 200) {
-    print('200' );
-    print(message );
+    print('200');
+    print(message);
     return [true, message];
   } else {
-    print('error' );
-    print(message );
+    print('error');
+    print(message);
     return message;
   }
 }
 
-changePassword(String phone,int code,String password )async{
+changePassword(String phone, int code, String password) async {
   final uri = Uri.parse('$url/change-password');
-  final body = jsonEncode({'phone': phone, 'randomCode':code ,'newPassword':password });
-  final response = await http
-      .post(uri, headers: headers, body: body);
-      final responseBody = json.decode(response.body);
+  final body =
+      jsonEncode({'phone': phone, 'randomCode': code, 'newPassword': password});
+  final response = await http.post(uri, headers: headers, body: body);
+  final responseBody = json.decode(response.body);
   final message = responseBody['message'];
   if (response.statusCode == 200) {
     return [true, message];
-  } else if (response.statusCode == 404){
-    return [false ,message];
-  } else{
-    return [false ,message];
+  } else if (response.statusCode == 404) {
+    return [false, message];
+  } else {
+    return [false, message];
   }
 }

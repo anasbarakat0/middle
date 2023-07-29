@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
-
 import 'color.dart';
 
 class RestaurantWidget extends StatefulWidget {
@@ -10,6 +8,7 @@ class RestaurantWidget extends StatefulWidget {
   final String address;
   final String workingHours;
   final List<String> catigory;
+  bool isSaved;
 
   RestaurantWidget({
     required this.image,
@@ -18,6 +17,7 @@ class RestaurantWidget extends StatefulWidget {
     required this.address,
     required this.workingHours,
     required this.catigory,
+    this.isSaved = false,
   });
 
   @override
@@ -25,12 +25,10 @@ class RestaurantWidget extends StatefulWidget {
 }
 
 class _RestaurantWidgetState extends State<RestaurantWidget> {
-  bool isSaved = false;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -40,17 +38,17 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 4,
-              offset: Offset(4, 4), // changes the shadow position
+              offset: const Offset(4, 4), // changes the shadow position
             ),
           ],
         ),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 100,
               width: MediaQuery.of(context).size.width,
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
@@ -62,14 +60,14 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                       fit: BoxFit.fitWidth,
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Color.fromRGBO(0, 0, 0, 0.3),
-                            Color.fromRGBO(255, 255, 255, 0)
+                            Color(0x00FFFFFF),
+                            Color(0x66000000),
                           ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         ),
                       ),
                     ),
@@ -77,7 +75,7 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: 75,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -85,12 +83,6 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                   Container(
                     height: 40,
                     width: 40,
-                    child: ClipOval(
-                      child: Image.asset(
-                        widget.logo,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -99,9 +91,15 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 1,
                           blurRadius: 1,
-                          offset: Offset(0, 0), // changes the shadow position
+                          offset: const Offset(0, 0), 
                         ),
                       ],
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        widget.logo,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -119,7 +117,7 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.red),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Text(
@@ -136,12 +134,12 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                             children: widget.catigory.map((category) {
                               return Chip(
                                 label: Text(category),
-                                backgroundColor: AppColors.redLight,
-                                labelStyle: TextStyle(
-                                  color: Colors.white,
+                                backgroundColor: AppColors.white,
+                                labelStyle:  TextStyle(
+                                  color: AppColors.redLight,
                                   fontSize: 12,
                                 ),
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 1,
                                   vertical: 1,
                                 ),
@@ -162,19 +160,6 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                   Container(
                     height: 40,
                     width: 40,
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isSaved = !isSaved;
-                        });
-                      },
-                      icon: Icon(
-                        isSaved
-                            ? Icons.bookmark
-                            : Icons.bookmark_border_outlined,
-                        color: AppColors.red,
-                      ),
-                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -183,9 +168,22 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 1,
                           blurRadius: 1,
-                          offset: Offset(0, 0), // changes the shadow position
+                          offset: const Offset(0, 0), // changes the shadow position
                         ),
                       ],
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          widget.isSaved = !widget.isSaved;
+                        });
+                      },
+                      icon: Icon(
+                        widget.isSaved
+                            ? Icons.bookmark
+                            : Icons.bookmark_border_outlined,
+                        color: AppColors.red,
+                      ),
                     ),
                   ),
                 ],

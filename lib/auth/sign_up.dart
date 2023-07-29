@@ -1,8 +1,9 @@
 import 'package:front/service/auth_service.dart';
-import 'package:front/main.dart';
 import 'package:flutter/material.dart';
 import '../theme/color.dart';
 import 'package:front/theme/auth_templets.dart';
+
+import 'log_in.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -244,7 +245,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ],
                   ),
-                 
                   Padding(
                     padding: const EdgeInsets.only(top: 50),
                     child: SizedBox(
@@ -256,13 +256,17 @@ class _SignUpPageState extends State<SignUpPage> {
                               MaterialStateProperty.all<Color>(AppColors.red),
                         ),
                         onPressed: () async {
-                          if (_nameController.text.isEmpty || phoneNumController.text.isEmpty ||addressController.text.isEmpty ||passwordController.text.isEmpty ||conPasswordController.text.isEmpty){
+                          if (_nameController.text.isEmpty ||
+                              phoneNumController.text.isEmpty ||
+                              addressController.text.isEmpty ||
+                              passwordController.text.isEmpty ||
+                              conPasswordController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Please fill in all fields")),
-                        );
-                        return;
+                              SnackBar(
+                                  content: Text("Please fill in all fields")),
+                            );
+                            return;
                           }
-
 
                           if (passwordController.text ==
                               conPasswordController.text) {
@@ -279,9 +283,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     builder: (context) => const StartPage()),
                               );
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  new SnackBar(
-                                      content: Text("${status[1]}")));
-                              
+                                  new SnackBar(content: Text("${status[1]}")));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   new SnackBar(content: Text("$status")));

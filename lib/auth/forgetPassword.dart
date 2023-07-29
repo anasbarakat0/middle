@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:front/auth/verificationPage.dart';
 import 'package:front/theme/color.dart';
 import 'package:front/theme/auth_templets.dart';
-
 import '../service/auth_service.dart';
-import '../main.dart';
+import 'log_in.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   @override

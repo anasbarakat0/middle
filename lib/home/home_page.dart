@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:front/home/profile.dart';
+import 'package:front/main.dart';
+import '../auth/log_in.dart';
 import '../theme/color.dart';
-import '../service/auth_service.dart';
 import '../theme/home_templets.dart';
-import '../main.dart';
-import 'package:flutter/rendering.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,14 +14,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PageController _tabController;
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   String _title = 'Home';
- @override
-void initState() {
-  super.initState();
-  _tabController = PageController(initialPage: _currentIndex, keepPage: true);
-}
 
+  @override
+  void initState() {
+    super.initState();
+    _tabController = PageController(initialPage: _currentIndex, keepPage: true);
+  }
 
   @override
   void dispose() {
@@ -30,8 +29,8 @@ void initState() {
     super.dispose();
   }
 
-  final List<RestaurantData> restaurants = [
-    RestaurantData(
+  final List<RestaurantWidget> restaurants = [
+    RestaurantWidget(
       image: 'images/restaurant.jpg',
       logo: 'images/DeuxRes.png',
       name: 'Restaurant 1',
@@ -39,7 +38,7 @@ void initState() {
       workingHours: '9:00 AM - 10:00 PM',
       catigory: ['Description 1', 'Description 2', 'Description 3'],
     ),
-    RestaurantData(
+    RestaurantWidget(
       image: 'images/restaurant.jpg',
       logo: 'images/DeuxRes.png',
       name: 'Restaurant 2',
@@ -53,9 +52,8 @@ void initState() {
         'Description 5'
       ],
     ),
-    // Add more restaurant data here
   ];
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -108,20 +106,23 @@ void initState() {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    Text('${getUser()}'),
+                    Text('${userName}'),
                   ],
                 ),
               ),
             ),
             leadingButtons(
-                title: 'Favorates',
-                icon: Icons.favorite,
+                title: 'Profile',
+                icon: Icons.person,
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => profilePage()),
+                  );
                 }),
             leadingButtons(
-                title: 'Feedback',
-                icon: Icons.feedback_rounded,
+                title: 'Contact Us',
+                icon: Icons.contact_support,
                 onTap: () {
                   Navigator.pop(context);
                 }),
@@ -129,6 +130,12 @@ void initState() {
                 title: 'Log Out',
                 icon: Icons.logout_rounded,
                 onTap: () {
+                  isAuthenticated = false;
+                  Id = '';
+                  userName = '';
+                  phone = '';
+                  address = '';
+                  token = '';
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const StartPage()),
@@ -136,6 +143,17 @@ void initState() {
                 }),
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _tabController.jumpToPage(1);
+          });
+        },
+        backgroundColor: _currentIndex == 1 ? AppColors.red : AppColors.white,
+        foregroundColor: _currentIndex == 1 ? AppColors.white : AppColors.grey,
+        child: Icon(Icons.home),
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -152,37 +170,18 @@ void initState() {
                       _tabController.jumpToPage(0);
                     });
                   },
-                  icon: Icon(Icons.home),
+                  icon: Icon(Icons.date_range_rounded),
                   color: _currentIndex == 0 ? AppColors.red : AppColors.grey,
                 ),
                 Text(
-                  'Home',
+                  'Reservation',
                   style: TextStyle(
                     color: _currentIndex == 0 ? AppColors.red : AppColors.grey,
                   ),
                 ),
               ],
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _tabController.jumpToPage(1);
-                    });
-                  },
-                  icon: Icon(Icons.restaurant),
-                  color: _currentIndex == 1 ? AppColors.red : AppColors.grey,
-                ),
-                Text(
-                  'Restaurant',
-                  style: TextStyle(
-                    color: _currentIndex == 1 ? AppColors.red : AppColors.grey,
-                  ),
-                ),
-              ],
-            ),
+            SizedBox(),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -192,33 +191,15 @@ void initState() {
                       _tabController.jumpToPage(2);
                     });
                   },
-                  icon: Icon(Icons.date_range_rounded),
+                  icon: Icon(_currentIndex == 2
+                      ? Icons.bookmark
+                      : Icons.bookmark_border_outlined),
                   color: _currentIndex == 2 ? AppColors.red : AppColors.grey,
-                ),
-                Text(
-                  'Reservation',
-                  style: TextStyle(
-                    color: _currentIndex == 2 ? AppColors.red : AppColors.grey,
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.values[0],
-              children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _tabController.jumpToPage(3);
-                    });
-                  },
-                  icon: Icon(Icons.bookmark),
-                  color: _currentIndex == 3 ? AppColors.red : AppColors.grey,
                 ),
                 Text(
                   'Saved',
                   style: TextStyle(
-                    color: _currentIndex == 3 ? AppColors.red : AppColors.grey,
+                    color: _currentIndex == 2 ? AppColors.red : AppColors.grey,
                   ),
                 ),
               ],
@@ -233,56 +214,100 @@ void initState() {
             _currentIndex = index;
             switch (_currentIndex) {
               case 0:
-                _title = 'Home';
-                break;
-              case 1:
-                _title = 'Restaurant';
-                break;
-              case 2:
                 _title = 'Reservation';
                 break;
-              case 3:
+              case 1:
+                _title = 'Home';
+                break;
+              case 2:
                 _title = 'Saved';
                 break;
             }
           });
         },
         children: [
-          ListView.builder(
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              final restaurant = restaurants[index];
-              return RestaurantWidget(
-                image: restaurant.image,
-                logo: restaurant.logo,
-                name: restaurant.name,
-                address: restaurant.address,
-                workingHours: restaurant.workingHours,
-                catigory: restaurant.catigory,
-              );
-            },
+          // Reservation page
+          Visibility(
+            visible: _currentIndex == 0,
+            maintainState: true,
+            child: Container(),
           ),
-          // Add the other screens here based on _currentIndex
+
+          // Home page
+          Visibility(
+            visible: _currentIndex == 1,
+            maintainState: true,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                  child: SearchBar(
+                    leading: SizedBox(width: 10),
+                    textStyle: MaterialStateProperty.all<TextStyle>(
+                      TextStyle(fontSize: 20),
+                    ),
+                    hintText: 'Search',
+                    trailing: [
+                      Icon(
+                        Icons.search,
+                        color: AppColors.grey,
+                      ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: restaurants.length,
+                    itemBuilder: (context, index) {
+                      final restaurant = restaurants[index];
+                      return RestaurantWidget(
+                        image: restaurant.image,
+                        logo: restaurant.logo,
+                        name: restaurant.name,
+                        address: restaurant.address,
+                        workingHours: restaurant.workingHours,
+                        catigory: restaurant.catigory,
+                        isSaved: restaurant.isSaved,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Saved page
+          Visibility(
+            visible: _currentIndex == 2,
+            maintainState: true,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: restaurants.length,
+                    itemBuilder: (context, index) {
+                      final restaurant = restaurants[index];
+                      if (restaurant.isSaved) {
+                        return RestaurantWidget(
+                          image: restaurant.image,
+                          logo: restaurant.logo,
+                          name: restaurant.name,
+                          address: restaurant.address,
+                          workingHours: restaurant.workingHours,
+                          catigory: restaurant.catigory,
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
-}
-
-class RestaurantData {
-  final String image;
-  final String logo;
-  final String name;
-  final String address;
-  final String workingHours;
-  final List<String> catigory;
-
-  RestaurantData({
-    required this.image,
-    required this.logo,
-    required this.name,
-    required this.address,
-    required this.workingHours,
-    required this.catigory,
-  });
 }
