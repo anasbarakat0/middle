@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/service/restaurants_service.dart';
 import 'auth/log_in.dart';
 import 'theme/color.dart';
 import 'home/home_page.dart';
@@ -6,7 +7,7 @@ import 'home/home_page.dart';
 void main() => runApp(MyApp());
 
 var token;
-bool isAuthenticated = false;
+bool isAuthenticated = true;
 String Id = '';
 String userName = '';
 String phone = '';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColors.red,
       ),
       debugShowCheckedModeBanner: false,
-      home: isAuthenticated ? const HomePage() : const StartPage(),
+      home: isAuthenticated ?  RestService() : const StartPage(),
     );
   }
 }

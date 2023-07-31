@@ -78,10 +78,61 @@ class _SignUpPageState extends State<SignUpPage> {
                     text: 'Name',
                     hintText: 'Enter your name',
                   ),
-                  CustomTextField(
-                    controller: phoneNumController,
-                    text: 'Phone Number',
-                    hintText: 'Enter your phone number',
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Phone number',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2.0,
+                                blurRadius: 3.0,
+                                color: Colors.black.withOpacity(0.3),
+                                offset: const Offset(3, 3),
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            controller: phoneNumController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: 'Enter your phone number',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: AppColors.red, width: 1.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: AppColors.red, width: 1.0),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: const EdgeInsets.all(16.0),
+                              prefixIconConstraints: const BoxConstraints(
+                                minWidth: 40.0,
+                              ),
+                            ),
+                            cursorColor: AppColors.red,
+                            obscureText: false,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   CustomTextField(
                     controller: addressController,
@@ -288,6 +339,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   new SnackBar(content: Text("$status")));
                             }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                new SnackBar(
+                                    content: Text(
+                                        "Please reconfirm your password")));
                           }
                         },
                         child: Text(

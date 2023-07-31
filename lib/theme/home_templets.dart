@@ -55,7 +55,7 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.asset(
+                    Image.network(
                       widget.image,
                       fit: BoxFit.fitWidth,
                     ),
@@ -96,7 +96,7 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                       ],
                     ),
                     child: ClipOval(
-                      child: Image.asset(
+                      child: Image.network(
                         widget.logo,
                         fit: BoxFit.cover,
                       ),

@@ -5,6 +5,7 @@ import 'package:front/main.dart';
 import '../auth/log_in.dart';
 import '../theme/color.dart';
 import '../theme/home_templets.dart';
+import '../service/restaurants_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,30 +31,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  final List<RestaurantWidget> restaurants = [
-    RestaurantWidget(
-      image: 'images/restaurant.jpg',
-      logo: 'images/DeuxRes.png',
-      name: 'Restaurant 1',
-      address: 'Address 1',
-      workingHours: '9:00 AM - 10:00 PM',
-      catigory: const ['Description 1', 'Description 2', 'Description 3'],
-    ),
-    RestaurantWidget(
-      image: 'images/restaurant.jpg',
-      logo: 'images/DeuxRes.png',
-      name: 'Restaurant 2',
-      address: 'Address 2',
-      workingHours: '9:00 AM - 10:00 PM',
-      catigory: const [
-        'Description 1',
-        'Description 2',
-        'Description 3',
-        'Description 4',
-        'Description 5'
-      ],
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +98,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const profilePage()),
+                    MaterialPageRoute(
+                        builder: (context) => const profilePage()),
                   );
                 }),
             leadingButtons(
@@ -239,7 +217,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Container(),
           ),
 
-          // Home page
+          // // Home page
           Visibility(
             visible: _currentIndex == 1,
             maintainState: true,
@@ -262,23 +240,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: restaurants.length,
-                    itemBuilder: (context, index) {
-                      final restaurant = restaurants[index];
-                      return RestaurantWidget(
-                        image: restaurant.image,
-                        logo: restaurant.logo,
-                        name: restaurant.name,
-                        address: restaurant.address,
-                        workingHours: restaurant.workingHours,
-                        catigory: restaurant.catigory,
-                        isSaved: restaurant.isSaved,
-                      );
-                    },
-                  ),
-                ),
+                RestService(),
               ],
             ),
           ),
@@ -290,24 +252,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: restaurants.length,
-                    itemBuilder: (context, index) {
-                      final restaurant = restaurants[index];
-                      if (restaurant.isSaved) {
-                        return RestaurantWidget(
-                          image: restaurant.image,
-                          logo: restaurant.logo,
-                          name: restaurant.name,
-                          address: restaurant.address,
-                          workingHours: restaurant.workingHours,
-                          catigory: restaurant.catigory,
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
+                  child: Container(),
                 ),
               ],
             ),

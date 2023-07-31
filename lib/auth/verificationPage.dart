@@ -9,8 +9,12 @@ import 'forgetPassword.dart';
 class verificationPage extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
+  final int code;
   const verificationPage(
-      {super.key, required this.nameController, required this.phoneController});
+      {super.key,
+      required this.nameController,
+      required this.phoneController,
+      required this.code});
 
   @override
   State<verificationPage> createState() => _verificationPageState();
@@ -138,24 +142,31 @@ class _verificationPageState extends State<verificationPage> {
                       ),
                 onPressed: areAllDigitsFilled()
                     ? () async {
-                       var status = await changePassword(
-                            widget.phoneController.text,
-                            getCode(),
-                            widget.nameController.text);
-                        if (status[0] == true) {
-                              Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => changePasswordPage(
-                                nameController: widget.nameController,
-                                    phoneController: widget.phoneController,
-                                    code: getCode(),
-                              )),
-                        );
-                            } else {
-                               ScaffoldMessenger.of(context).showSnackBar(
-                            new SnackBar(content: Text("$status")));
-                            }
+                        if (widget.code == getCode()) {
+                          var status = await changePassword(
+                              widget.phoneController.text,
+                              getCode(),
+                              widget.nameController.text);
+
+                          if (status[0] == true) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => changePasswordPage(
+                                        nameController: widget.nameController,
+                                        phoneController: widget.phoneController,
+                                        code: getCode(),
+                                      )),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                new SnackBar(content: Text("$status")));
+                          }
+                        }
+                        else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                                new SnackBar(content: Text("The verification code is incorrect")));
+                        }
                       }
                     : null,
                 child: Text(

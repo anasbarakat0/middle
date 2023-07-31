@@ -18,8 +18,6 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   bool isPasswordVisible = false;
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>();
 
   void _signInButtonPressed() async {
     var status = await login(name.text, password.text);
@@ -34,17 +32,14 @@ class _StartPageState extends State<StartPage> {
       );
     } else if (status != true) {
       print("can't login");
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(
-          content: Text("$status"),
-        ),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("$status")),
       );
+
     } else {
       print("Connection refused");
-      _scaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(
-          content: Text("Connection refused"),
-        ),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Connection refused")),
       );
     }
   }

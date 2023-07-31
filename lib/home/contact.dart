@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
 import '../theme/color.dart';
 
 class contactPage extends StatefulWidget {
@@ -10,21 +9,7 @@ class contactPage extends StatefulWidget {
 }
 
 class _contactPageState extends State<contactPage> {
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>();
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-
   @override
-  void initState() {
-    super.initState();
-    nameController.text = userName;
-    phoneController.text = phone;
-    addressController.text = address;
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -43,9 +28,9 @@ class _contactPageState extends State<contactPage> {
               padding: const EdgeInsets.only(
                 top: 100,
               ),
-              child: Text(
+              child: const Text(
                 'Contact With DouxRes',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                 ),
@@ -66,7 +51,7 @@ class _contactPageState extends State<contactPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.mail_outline),
+                const Icon(Icons.mail_outline),
                 Text(
                   ' : info@douxres.com',
                   style: TextStyle(
@@ -79,7 +64,7 @@ class _contactPageState extends State<contactPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.call_outlined),
+                const Icon(Icons.call_outlined),
                 Text(
                   ' : 0987654321',
                   style: TextStyle(

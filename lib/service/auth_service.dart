@@ -134,7 +134,7 @@ final response = await http.post(uri, headers: headers, body: body);
   if (response.statusCode == 200) {
       print('200');
     print(message);
-    return [true, message];
+    return [true, message,responseBody['random']];
   } else {
     print('error');
     print(message);
