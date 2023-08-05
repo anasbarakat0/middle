@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front/auth/sign_up.dart';
-import '../main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/color.dart';
 import '../service/auth_service.dart';
-import '../auth/forgetPassword.dart';
+import 'forget_password.dart';
 import '../home/home_page.dart';
+import 'app/injection/get_it_inject.dart';
 
 TextEditingController name = TextEditingController();
 TextEditingController password = TextEditingController();
@@ -23,23 +24,21 @@ class _StartPageState extends State<StartPage> {
     var status = await login(name.text, password.text);
 
     if (status == true) {
-      print("loged in success");
-      print('status: $status');
-      isAuthenticated = true;
+      getIt.get<SharedPreferences>().setBool('isAuthenticated', true);
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else if (status != true) {
-      print("can't login");
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("$status")),
       );
-
     } else {
-      print("Connection refused");
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Connection refused")),
+        const SnackBar(content: Text("Connection refused")),
       );
     }
   }
@@ -165,7 +164,7 @@ class _StartPageState extends State<StartPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          ForgetPasswordPage(),
+                                          const ForgetPasswordPage(),
                                     ),
                                   );
                                 },

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:front/auth/verificationPage.dart';
+import 'package:front/auth/verification_page.dart';
 import 'package:front/theme/color.dart';
 import 'package:front/theme/auth_templets.dart';
 import '../service/auth_service.dart';
 import 'log_in.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
+  const ForgetPasswordPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ForgetPasswordPageState createState() => _ForgetPasswordPageState();
 }
 
@@ -19,7 +22,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(23.0),
+          padding: const EdgeInsets.all(23.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -119,7 +122,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               Container(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 50),
                   child: SizedBox(
                     width: 70.0,
                     height: 35,
@@ -132,7 +135,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         if (nameController.text.isEmpty ||
                             phoneController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content: Text("Please fill in all fields")),
                           );
                           return;
@@ -141,28 +144,31 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         var status = await forgetPassword(
                             nameController.text, phoneController.text);
                         if (status[0] == true) {
+                          // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => verificationPage(
+                                builder: (context) => VerificationPage(
                                       nameController: nameController,
                                       phoneController: phoneController,
                                       code: status[2],
                                     )),
                           );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              new SnackBar(content: Text(status[1])));
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(status[1])));
                           // Navigator.pushReplacement(
                           //   context,
                           //   MaterialPageRoute(
                           //       builder: (context) => const HomePage()),
                           // );
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              new SnackBar(content: Text("$status")));
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text("$status")));
                         }
                       },
-                      child: Text('Next'),
+                      child: const Text('Next'),
                     ),
                   ),
                 ),

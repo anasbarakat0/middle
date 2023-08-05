@@ -3,9 +3,9 @@ import 'package:front/service/profile_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../auth/app/injection/get_it_inject.dart';
 import '../main.dart';
 
-const url = 'http://192.168.1.115:3000';
 final uri = Uri.parse(url);
 final headers = {
   'Content-Type': 'application/json',
@@ -35,20 +35,20 @@ login(String phone, String password) async {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      token = '${responseJson['token']}';
-      Id = responseJson['id'];
-      print('Token: $token');
-      print('Id: $Id');
+
+      getIt
+          .get<SharedPreferences>()
+          .setString('token', '${responseJson['token']}');
+
+      userId = responseJson['id'];
       getData();
-            return true;
+      return true;
     } else {
       final responseBody = json.decode(response.body);
       final message = responseBody['message'];
-      print('Error: $message');
       return message;
     }
   } catch (e) {
-    print('Error: $e');
     return 'An error occurred during login.';
   }
 }
@@ -96,48 +96,44 @@ signup(String name, String password, String phone, String address) async {
       return message;
     }
   } catch (e) {
-    print('Error: $e');
     return 'An error occurred during signup.';
   }
 }
 
-Future<void> fetchRestaurants() async {
-  final header = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json'
-  };
+// Future<void> fetchRestaurants() async {
+//   final header = {
+//     'Authorization':
+//         'Bearer ${getIt.get<SharedPreferences>().getString('token')}',
+//     'Content-Type': 'application/json'
+//   };
 
-  try {
-    final response =
-        await http.get(Uri.parse('$url/restaurants'), headers: header);
+//   try {
+//     final response =
+//         await http.get(Uri.parse('$url/restaurants'), headers: header);
 
-    if (response.statusCode == 200) {
-      print("Request was successful, parse the response JSON");
-      final restaurants = json.decode(response.body)['restaurants'];
-      print(restaurants);
-    } else if (response.statusCode == 401) {
-      print('Unauthorized');
-    } else {
-      print('Request failed with status: ${response.statusCode}');
-    }
-  } catch (e) {
-    print('Error: $e');
-  }
-}
+//     if (response.statusCode == 200) {
+//       print("Request was successful, parse the response JSON");
+//       final restaurants = json.decode(response.body)['restaurants'];
+//       print(restaurants);
+//     } else if (response.statusCode == 401) {
+//       print('Unauthorized');
+//     } else {
+//       print('Request failed with status: ${response.statusCode}');
+//     }
+//   } catch (e) {
+//     print('Error: $e');
+//   }
+// }
 
 forgetPassword(String name, String phone) async {
   final uri = Uri.parse('$url/forgot-password');
   final body = jsonEncode({'name': name, 'phone': phone});
-final response = await http.post(uri, headers: headers, body: body);
+  final response = await http.post(uri, headers: headers, body: body);
   final responseBody = json.decode(response.body);
   final message = responseBody['message'];
   if (response.statusCode == 200) {
-      print('200');
-    print(message);
-    return [true, message,responseBody['random']];
+    return [true, message, responseBody['random']];
   } else {
-    print('error');
-    print(message);
     return message;
   }
 }

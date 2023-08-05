@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import '../theme/color.dart';
 
-class contactPage extends StatefulWidget {
-  const contactPage({super.key});
+class ContactPage extends StatefulWidget {
+  const ContactPage({super.key});
 
   @override
-  State<contactPage> createState() => _contactPageState();
+  State<ContactPage> createState() => _ContactPageState();
 }
 
-class _contactPageState extends State<contactPage> {
+class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Contact Us'),
+        title:  const Text('Contact Us'),
         backgroundColor: AppColors.red,
         foregroundColor: AppColors.white,
       ),

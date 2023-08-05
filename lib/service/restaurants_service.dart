@@ -1,9 +1,11 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:front/auth/app/injection/get_it_inject.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../main.dart';
 import '../theme/home_templets.dart';
+import 'package:http/http.dart' as http;
 
 class Restaurant {
   String logo;
@@ -350,79 +352,131 @@ class Food {
   }
 }
 
-class RestService extends StatefulWidget {
-  @override
-  _RestServiceState createState() => _RestServiceState();
-}
+class RestService extends StatelessWidget {
+  const RestService({super.key});
 
-class _RestServiceState extends State<RestService> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        future: fetchRestaurants(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData) {
-            // Cast snapshot.data to Map<String, dynamic>
-            Map<String, dynamic> data = snapshot.data as Map<String, dynamic>;
+    return FutureBuilder(
+      future: fetchRestaurants(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          Map<String, dynamic> data = snapshot.data as Map<String, dynamic>;
 
-            List<dynamic>? restaurantList = data['data'];
-            print(data['data']);
-            if (restaurantList == null || restaurantList.isEmpty) {
-              return Center(
-                child: Text('No restaurants found.'),
-              );
-            }
+          List<dynamic>? restaurantList = data['data'];
 
-            return SingleChildScrollView(
-              child: ListView.builder(
-                itemCount: restaurantList.length,
-                itemBuilder: (context, index) {
-                  dynamic restaurantData = restaurantList[index];
-                  List<String> categories = List<String>.from(
-                      restaurantData['categories'] ?? ['categories']);
-            
-                  String address = restaurantData['address'] ?? 'address';
-            
-                  String image = restaurantData['image'] ?? 'image';
-            
-                  String logo = restaurantData['logo'] ?? 'logo';
-            
-                  String name = restaurantData['name'] ?? 'name';
-            
-                  String open = restaurantData['workingHours'][0] ?? 'open';
-                  String closed =
-                      restaurantData['workingHours'][1] ?? 'close';
-            String workingHours = '$open - $closed';
-                  return RestaurantWidget(
-                      image: image,
-                      logo: logo,
-                      name: name,
-                      address: address,
-                      workingHours: workingHours,
-                      catigory: categories);
-                },
-              ),
-            );
-          } else {
-            return Center(
-              child: Text('Failed to fetch data.'),
+          getIt
+              .get<SharedPreferences>()
+              .setString("data", restaurantList.toString());
+
+          if (restaurantList == null || restaurantList.isEmpty) {
+            return const Center(
+              child: Text('No Restaurants Found.'),
             );
           }
-        },
-      ),
+
+          return Column(children: [
+            RestaurantWidget(
+              id: restaurantList[0]['_id'],
+              image: '$url/uploads/${restaurantList[0]['Images'][0]}',
+              logo: '$url/uploads/${restaurantList[0]['logo']}',
+              name: restaurantList[0]['name'],
+              address: restaurantList[0]['address'],
+              catigory: restaurantList[0]['categories'],
+              tables: restaurantList[0]['numberoftables'],
+            )
+          ]);
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Failed to fetch data: ${snapshot.error}'),
+          );
+        } else {
+          return const Center(
+            child: Text('Unknown error occurred.'),
+          );
+        }
+      },
     );
   }
 }
 
-fetchRestaurants() async {
-  Dio dio = Dio();
+// fetchRestaurants() async {
+//   Dio dio = Dio();
+//   Response response = await dio.get('http://http://192.168.1.115:3000:3000/restaurants',
+//       options: Options(headers: {
+//         "Authorization": "Bearer ${getIt.get<SharedPreferences>().getString(
+//               "token",
+//             )}",
+//         'Content-Type': 'application/json',
+//         'Accept': '*/*',
+//         'Accept-Encoding': 'gzip, deflate, br',
+//         'Connection': 'keep-alive',
+//       }));
+//   print('your token is :....${getIt.get<SharedPreferences>().getString(
+//         "token",
+//       )}');
+//   return response.data;
+// }
 
-  Response response = await dio.get('http://192.168.1.115:3000/restaurants',
-      options: Options(responseType: ResponseType.json));
-  return response.data;
+Future<dynamic> fetchRestaurants() async {
+  String token = getIt.get<SharedPreferences>().getString("token") ?? "";
+
+  try {
+    final response = await http.get(
+    Uri.parse('$url/restaurants'),
+    headers: {
+      "Authorization": "Bearer $token",
+      'Content-Type': 'application/json',
+      'Accept': '*/*',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Connection': 'keep-alive',
+    },
+  );
+  print('your token is :  ++++++++++++++++++++++ ${getIt.get<SharedPreferences>().getString("token") ?? ""}');
+  print(response.body);
+var responsebody = json.decode(response.body);
+print (responsebody);
+  if (response.statusCode == 200) {
+    return responsebody;
+  // } else if (response.statusCode == 500) {
+  //   return responsebody['message'];
+  } else {
+    throw Exception('Failed to load restaurants');
+  }
+  }catch(e){
+    return 'Error: $e';
+  }
+}
+
+// void fetchData() async {
+//   Response response = await getRestaurants();
+//   if (response != null) {
+//     // Handle the response data here
+//     print(response.data);
+//   } else {
+//     // Handle error or network issues
+//     print("Failed to fetch data");
+//   }
+// }
+
+// getImage(String image) async {
+//   Dio dio = Dio();
+//   Response response = await dio.post('http://http://192.168.1.115:3000:3000/upload',
+//       options: Options(responseType: ResponseType.json));
+//   print('your image should be uploaded :.. ${response.data}');
+//   return response.data;
+// }
+
+Future<dynamic> getImage(String image) async {
+  final response = await http.post(
+    Uri.parse('$url/uploads'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode(image.toString()),
+  );
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    return 'https://knowledge.wharton.upenn.edu/wp-content/uploads/2016/04/network-connections.jpg';
+  }
 }

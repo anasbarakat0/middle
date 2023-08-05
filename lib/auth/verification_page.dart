@@ -3,24 +3,25 @@ import 'package:front/service/auth_service.dart';
 
 import '../theme/auth_templets.dart';
 import '../theme/color.dart';
-import 'changePassword.dart';
-import 'forgetPassword.dart';
+import 'change_password.dart';
+import 'forget_password.dart';
 
-class verificationPage extends StatefulWidget {
+class VerificationPage extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final int code;
-  const verificationPage(
+  const VerificationPage(
       {super.key,
       required this.nameController,
       required this.phoneController,
       required this.code});
 
   @override
-  State<verificationPage> createState() => _verificationPageState();
+  State<VerificationPage> createState() => _VerificationPageState();
 }
 
-class _verificationPageState extends State<verificationPage> {
+// ignore: camel_case_types
+class _VerificationPageState extends State<VerificationPage> {
   final TextEditingController digit1 = TextEditingController();
   final TextEditingController digit2 = TextEditingController();
   final TextEditingController digit3 = TextEditingController();
@@ -73,7 +74,7 @@ class _verificationPageState extends State<verificationPage> {
               onPressed: () {
                 Navigator.pop(
                   context,
-                  MaterialPageRoute(builder: (context) => ForgetPasswordPage()),
+                  MaterialPageRoute(builder: (context) => const ForgetPasswordPage()),
                 );
               },
               icon: const Icon(Icons.keyboard_backspace_sharp),
@@ -87,8 +88,8 @@ class _verificationPageState extends State<verificationPage> {
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 5),
+          const Padding(
+            padding:  EdgeInsets.only(bottom: 5),
             child: Text(
               "Please Enter your verification code",
               style: TextStyle(
@@ -149,29 +150,32 @@ class _verificationPageState extends State<verificationPage> {
                               widget.nameController.text);
 
                           if (status[0] == true) {
+                            // ignore: use_build_context_synchronously
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => changePasswordPage(
+                                  builder: (context) => ChangePasswordPage(
                                         nameController: widget.nameController,
                                         phoneController: widget.phoneController,
                                         code: getCode(),
                                       )),
                             );
                           } else {
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
-                                new SnackBar(content: Text("$status")));
+                                SnackBar(content: Text("$status")));
                           }
-                        }
-                        else {
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                                new SnackBar(content: Text("The verification code is incorrect")));
+                              const SnackBar(
+                                  content: Text(
+                                      "The verification code is incorrect")));
                         }
                       }
                     : null,
                 child: Text(
                   areAllDigitsFilled() ? "Change Password" : "Enter the code",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
                 ),

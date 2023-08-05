@@ -9,7 +9,7 @@ class CustomTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final bool obscure;
 
-  const CustomTextField({
+  const CustomTextField({super.key, 
     required this.controller,
     required this.text,
     required this.hintText,
@@ -18,6 +18,7 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
 
@@ -83,7 +84,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
 class DigitBox extends StatelessWidget {
   final TextEditingController controller;
-  const DigitBox({
+  const DigitBox({super.key, 
     required this.controller,
   });
 

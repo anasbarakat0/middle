@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:front/theme/color.dart';
-import '../home/home_page.dart';
 import '../service/auth_service.dart';
 import 'log_in.dart';
 
-class changePasswordPage extends StatefulWidget {
+class ChangePasswordPage extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final int code;
-  const changePasswordPage(
+  const ChangePasswordPage(
       {super.key,
       required this.nameController,
       required this.phoneController,
       required this.code});
   @override
-  _changePasswordPageState createState() => _changePasswordPageState();
+  // ignore: library_private_types_in_public_api
+  _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
-class _changePasswordPageState extends State<changePasswordPage> {
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController cPasswordController = TextEditingController();
 
@@ -30,7 +30,7 @@ class _changePasswordPageState extends State<changePasswordPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(23.0),
+          padding: const EdgeInsets.all(23.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -226,7 +226,7 @@ class _changePasswordPageState extends State<changePasswordPage> {
               Container(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 50),
                   child: SizedBox(
                     width: 70.0,
                     height: 35,
@@ -239,12 +239,12 @@ class _changePasswordPageState extends State<changePasswordPage> {
                         if (passwordController.text.isEmpty ||
                             cPasswordController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Please fill in all fields")),
+                            const SnackBar(content: Text("Please fill in all fields")),
                           );
                           return;
                         } else if (match != true) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content: Text("Please reconfirm your password")),
                           );
                           return;
@@ -254,18 +254,20 @@ class _changePasswordPageState extends State<changePasswordPage> {
                               widget.code,
                               passwordController.text);
                           if (status[0] == true) {
-                            print('status: ${status[1]}');
+                            // ignore: use_build_context_synchronously
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const StartPage()),
                             );
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("The Password Changed Successfully")),
+                              const SnackBar(content: Text("The Password Changed Successfully")),
                             );
                           } else {
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("pleas try again")),
+                              const SnackBar(content: Text("pleas try again")),
                             );
                           }
                         }
@@ -282,34 +284,3 @@ class _changePasswordPageState extends State<changePasswordPage> {
     );
   }
 }
-
-
-// () async {
-//                             if (passwordController.text ==
-//                                 conPasswordController.text) {
-//                               var status = await signup(
-//                                   _nameController.text,
-//                                   passwordController.text,
-//                                   phoneNumController.text,
-//                                   addressController.text);
-              
-//                               if (status[0] == true) {
-//                                 Navigator.pop(
-//                                   context,
-//                                   MaterialPageRoute(
-//                                       builder: (context) => const StartPage()),
-//                                 );
-//                                 ScaffoldMessenger.of(context).showSnackBar(
-//                                     new SnackBar(
-//                                         content: Text("${status[1]}")));
-//                                 // Navigator.pushReplacement(
-//                                 //   context,
-//                                 //   MaterialPageRoute(
-//                                 //       builder: (context) => const HomePage()),
-//                                 // );
-//                               } else {
-//                                 ScaffoldMessenger.of(context).showSnackBar(
-//                                     new SnackBar(content: Text("$status")));
-//                               }
-//                             }
-//                           },

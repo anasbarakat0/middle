@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front/home/contact.dart';
 import 'package:front/home/profile.dart';
+import 'package:front/home/reservations.dart';
 import 'package:front/main.dart';
+import 'package:front/service/reservat_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../auth/app/injection/get_it_inject.dart';
 import '../auth/log_in.dart';
 import '../theme/color.dart';
 import '../theme/home_templets.dart';
@@ -92,35 +96,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            leadingButtons(
+            LeadingButtons(
                 title: 'Profile',
                 icon: Icons.person,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const profilePage()),
+                        builder: (context) => const ProfilePage()),
                   );
                 }),
-            leadingButtons(
+            LeadingButtons(
                 title: 'Contact Us',
                 icon: Icons.contact_support,
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const contactPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const ContactPage()),
                   );
                 }),
-            leadingButtons(
+            LeadingButtons(
                 title: 'Log Out',
                 icon: Icons.logout_rounded,
                 onTap: () {
-                  isAuthenticated = false;
-                  Id = '';
+                  getIt
+                      .get<SharedPreferences>()
+                      .setBool('isAuthenticated', false);
+                  getIt
+                      .get<SharedPreferences>()
+                      .setString('token', '');
+                  userId = '';
                   userName = '';
                   phone = '';
                   address = '';
-                  token = '';
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const StartPage()),
@@ -151,6 +160,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 IconButton(
                   onPressed: () {
+                    showReservations();
                     setState(() {
                       _tabController.jumpToPage(0);
                     });
@@ -214,34 +224,66 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Visibility(
             visible: _currentIndex == 0,
             maintainState: true,
-            child: Container(),
+            child: ShowReservations(),
           ),
 
           // // Home page
           Visibility(
             visible: _currentIndex == 1,
             maintainState: true,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                  child: SearchBar(
-                    leading: const SizedBox(width: 10),
-                    textStyle: MaterialStateProperty.all<TextStyle>(
-                      const TextStyle(fontSize: 20),
-                    ),
-                    hintText: 'Search',
-                    trailing: [
-                      Icon(
-                        Icons.search,
-                        color: AppColors.grey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                    child: SearchBar(
+                      leading: const SizedBox(width: 10),
+                      textStyle: MaterialStateProperty.all<TextStyle>(
+                        const TextStyle(fontSize: 20),
                       ),
-                      const SizedBox(width: 10),
-                    ],
+                      hintText: 'Search',
+                      trailing: [
+                        Icon(
+                          Icons.search,
+                          color: AppColors.grey,
+                        ),
+                        const SizedBox(width: 10),
+                      ],
+                    ),
                   ),
-                ),
-                RestService(),
-              ],
+                  RestaurantWidget(
+                    id: '',
+                    image:
+                        'https://static.dezeen.com/uploads/2021/01/burger-king-logo-rebrand-bk-jkr_dezeen_2364_col_4.jpg',
+                    logo:
+                        'https://www.designyourway.net/blog/wp-content/uploads/2019/10/s1-3-7.jpg',
+                    name: 'Burger King',
+                    address: 'Mazeh',
+                    catigory: const [ 'Restaurant', 'Burger','Sandwitch'], tables: 10,
+                  ),
+                  RestaurantWidget(
+                    id: '',
+                    image:
+                        'https://blog.logomyway.com/wp-content/uploads/2020/09/KFC-logo2-store.jpg',
+                    logo:
+                        'https://1000logos.net/wp-content/uploads/2019/07/KFC-logo-2006.png',
+                    name: 'KFC',
+                    address: 'Malki',
+                    catigory: const [ 'Restaurant', 'chiken'], tables: 10,
+                  ),
+                  RestaurantWidget(
+                    id: '',
+                    image:
+                        'https://franchise.pizzahut.com/images/restaurants_intro.jpg',
+                    logo:
+                        'https://logos-world.net/wp-content/uploads/2021/10/Pizza-Hut-Logo-1999-2010.png',
+                    name: 'Pizza Hot',
+                    address: 'Abo Romaneh',
+                    catigory: const ['pizza', 'Restaurant',], tables: 10,
+                  ),
+                  const RestService(),
+                ],
+              ),
             ),
           ),
 

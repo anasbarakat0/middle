@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Container(
           alignment: Alignment.topLeft,
           child: ListView(
-            padding: EdgeInsets.all(7),
+            padding: const EdgeInsets.all(7),
             shrinkWrap: false,
             children: [
               Container(
@@ -313,7 +313,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               passwordController.text.isEmpty ||
                               conPasswordController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                   content: Text("Please fill in all fields")),
                             );
                             return;
@@ -328,25 +328,28 @@ class _SignUpPageState extends State<SignUpPage> {
                                 addressController.text);
 
                             if (status[0] == true) {
+                              // ignore: use_build_context_synchronously
                               Navigator.pop(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const StartPage()),
                               );
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  new SnackBar(content: Text("${status[1]}")));
+                                   SnackBar(content: Text("${status[1]}")));
                             } else {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  new SnackBar(content: Text("$status")));
+                                   SnackBar(content: Text("$status")));
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                new SnackBar(
+                                 const SnackBar(
                                     content: Text(
                                         "Please reconfirm your password")));
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           'Sign Up',
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
