@@ -18,11 +18,17 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+late List reservations;
+
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  int length = 0;
   late PageController _tabController;
   int _currentIndex = 1;
   String _title = 'Home';
 
+  late List status;
+  late List<String> restLogo;
+  late List<String> tableNumber;
   @override
   void initState() {
     super.initState();
@@ -123,9 +129,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   getIt
                       .get<SharedPreferences>()
                       .setBool('isAuthenticated', false);
-                  getIt
-                      .get<SharedPreferences>()
-                      .setString('token', '');
+                  getIt.get<SharedPreferences>().setString('token', '');
                   userId = '';
                   userName = '';
                   phone = '';
@@ -159,8 +163,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  onPressed: () {
-                    showReservations();
+                  onPressed: () async {
+                    reservations = await showReservations();
+                    length = reservations.length;
                     setState(() {
                       _tabController.jumpToPage(0);
                     });
@@ -224,10 +229,63 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Visibility(
             visible: _currentIndex == 0,
             maintainState: true,
-            child: ShowReservations(),
+            child: ListView.builder(
+              itemCount: length,
+              itemBuilder: (context, index) {
+                @override
+                void initState() {
+                  super.initState();
+
+                  if (reservations[index]['isPending'] == true &&
+                      reservations[index]['isAccepted'] == false) {
+                    status[index] = 'Waiting';
+                  } else if (reservations[index]['isPending'] == false &&
+                      reservations[index]['isAccepted'] == true) {
+                    status[index] = 'Accepted';
+                  } else {
+                    status[index] = 'Rejected';
+                  }
+                }
+
+                var st = getTableById(reservations[index]['tableId']);
+                Future.delayed(const Duration(seconds: 1), () {
+                  var tableNo = st['tableNumber'];
+
+                  var rest =
+                      getRestaurantById(reservations[index]['restaurantId']);
+                  Future.delayed(
+                    const Duration(seconds: 1),
+                    () {
+                      var restLogo = rest['logo'];
+                      var restName = rest['name'];
+
+                      var cropT = reservations[index]['reservationDate']
+                          .toString()
+                          .substring(11, 16);
+                      var cropD = reservations[index]['reservationDate']
+                          .toString()
+                          .substring(5, 10);
+                      var croped = "$cropD $cropT";
+                      return ShowReservations(
+                        restaurantId: reservations[index]['restaurantId'],
+                        reservationId: reservations[index]
+                            ['_id'], /////////////////////////////////////////
+                        date: croped,
+                        people: reservations[index]['numberOfPeople'],
+                        restName: restLogo,
+                        restLogo: restName,
+                        tableNo: tableNo,
+                        status: status[index],
+                        tableId: reservations[index]['tableId'],
+                      );
+                    },
+                  );
+                });
+              },
+            ),
           ),
 
-          // // Home page
+          // Home page
           Visibility(
             visible: _currentIndex == 1,
             maintainState: true,
@@ -235,7 +293,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                    padding:
+                        const EdgeInsets.only(left: 10, right: 10, top: 10),
                     child: SearchBar(
                       leading: const SizedBox(width: 10),
                       textStyle: MaterialStateProperty.all<TextStyle>(
@@ -250,36 +309,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         const SizedBox(width: 10),
                       ],
                     ),
-                  ),
-                  RestaurantWidget(
-                    id: '',
-                    image:
-                        'https://static.dezeen.com/uploads/2021/01/burger-king-logo-rebrand-bk-jkr_dezeen_2364_col_4.jpg',
-                    logo:
-                        'https://www.designyourway.net/blog/wp-content/uploads/2019/10/s1-3-7.jpg',
-                    name: 'Burger King',
-                    address: 'Mazeh',
-                    catigory: const [ 'Restaurant', 'Burger','Sandwitch'], tables: 10,
-                  ),
-                  RestaurantWidget(
-                    id: '',
-                    image:
-                        'https://blog.logomyway.com/wp-content/uploads/2020/09/KFC-logo2-store.jpg',
-                    logo:
-                        'https://1000logos.net/wp-content/uploads/2019/07/KFC-logo-2006.png',
-                    name: 'KFC',
-                    address: 'Malki',
-                    catigory: const [ 'Restaurant', 'chiken'], tables: 10,
-                  ),
-                  RestaurantWidget(
-                    id: '',
-                    image:
-                        'https://franchise.pizzahut.com/images/restaurants_intro.jpg',
-                    logo:
-                        'https://logos-world.net/wp-content/uploads/2021/10/Pizza-Hut-Logo-1999-2010.png',
-                    name: 'Pizza Hot',
-                    address: 'Abo Romaneh',
-                    catigory: const ['pizza', 'Restaurant',], tables: 10,
                   ),
                   const RestService(),
                 ],

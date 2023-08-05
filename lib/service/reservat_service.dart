@@ -26,7 +26,7 @@ getTable(int number) async {
   }
 }
 
-addReservation(int number, String date, int people) async {
+addReservation(int number, String date, int people,String type) async {
   dynamic id = await getTable(number);
 
   final uri = Uri.parse(
@@ -45,22 +45,11 @@ addReservation(int number, String date, int people) async {
               "customerNumber": phone,
               "reservationDate": date,
               "numberOfPeople": people,
-              "reservationType": "lunch"
+              "reservationType": type,
             },
           ),
         );
-        print ('your token is :>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${getIt.get<SharedPreferences>().getString('RestaurantID') ?? ''}');
-        print ('your body is :>................................. ${jsonEncode(
-        
-            {
-              "userId": userId,
-              "customerName": userName,
-              "customerNumber": phone,
-              "reservationDate": date,
-              "numberOfPeople": people,
-              "reservationType": "lunch"
-            },
-          )}');
+
         final responseBody = json.decode(response.body);
         if (response.statusCode == 200) {
           return responseBody['message'];
@@ -90,5 +79,87 @@ showReservations() async {
     }
   } catch (e) {
     return 'An error occurred during showing reservations';
+  }
+}
+
+getTableById(String tableId) async {
+  final uri = Uri.parse('$url/tables/$tableId');
+
+  try {
+    final response = await http.get(uri, headers: headers);
+    final responseBody = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return responseBody;
+    } else if (response.statusCode == 500) {
+      return responseBody['message'];
+    } else {
+      return responseBody['message'];
+    }
+  } catch (e) {
+    return 'An error occurred during return table number';
+  }
+}
+
+getRestaurantById(String restId) async {
+  final uri = Uri.parse('$url/api/restaurants/$restId');
+
+  try {
+    final response = await http.get(uri, headers: headers);
+    final responseBody = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return responseBody;
+    } else if (response.statusCode == 500) {
+      return responseBody;
+    } else {
+      return responseBody;
+    }
+  } catch (e) {
+    return 'An error occurred during return restaurant $e';
+  }
+}
+
+deletReservation(String reservationId) async {
+  final uri = Uri.parse('$url/reservations/$reservationId');
+
+  try {
+    final response = await http.delete(uri, headers: headers);
+    final responseBody = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return responseBody['message'];
+    } else {
+      return responseBody;
+    }
+  } catch (e) {
+    return 'An error occurred during return restaurant $e';
+  }
+}
+
+updateReservation(
+     String date, int people, String reservationId) async {
+  final uri = Uri.parse('$url/reservations/$reservationId');
+  try {
+    final response = await http.put(
+      uri,
+      headers: headers,
+      body: jsonEncode(
+        {
+          "userId": userId,
+          "customerName": userName,
+          "customerNumber": phone,
+          "reservationDate": date,
+          "numberOfPeople": people,
+          "reservationType": "lunch"
+        },
+      ),
+    );
+
+    final responseBody = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return responseBody['message'];
+    } else {
+      return responseBody['message'];
+    }
+  } catch (e) {
+    return 'An error occurred during reservate.';
   }
 }

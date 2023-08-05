@@ -14,16 +14,22 @@ class RestaurantWidget extends StatefulWidget {
   final String address;
   final List<dynamic> catigory;
   final int tables;
+  final String open;
+  final String close;
   bool isSaved;
 
-  RestaurantWidget({super.key, 
+  RestaurantWidget({
+    super.key,
     required this.id,
     required this.image,
     required this.logo,
     required this.name,
     required this.address,
     required this.catigory,
-    this.isSaved = false, required this.tables,
+    this.isSaved = false,
+    required this.tables,
+    required this.open,
+    required this.close,
   });
 
   @override
@@ -62,9 +68,10 @@ class _RestaurantWidgetState extends State<RestaurantWidget> {
                         address: widget.address,
                         catigory: widget.catigory,
                         workingHours: WorkingHours(
-                          open: '9',
-                          close: '1',
-                        ), tables: widget.tables,
+                          open: widget.open,
+                          close: widget.close,
+                        ),
+                        tables: widget.tables,
                       )),
             );
           },
@@ -237,7 +244,8 @@ class LeadingButtons extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const LeadingButtons({super.key, 
+  const LeadingButtons({
+    super.key,
     required this.title,
     required this.icon,
     required this.onTap,

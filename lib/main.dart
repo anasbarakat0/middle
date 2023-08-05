@@ -5,7 +5,7 @@ import 'auth/log_in.dart';
 import 'home/home_page.dart';
 import 'theme/color.dart';
 
-const url = 'https://dcc9-145-249-64-188.ngrok-free.app';
+const url = 'https://73b5-5-155-31-167.ngrok-free.app';
 // const url = 'http://192.168.1.115:3000';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

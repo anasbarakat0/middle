@@ -89,7 +89,7 @@ class _RestPageState extends State<RestPage> {
                             width: 16,
                           ),
                           Text(
-                            'Open everyday at ${widget.workingHours.open} AM to ${widget.workingHours.close} AM',
+                            'Open everyday at ${widget.workingHours.open} to ${widget.workingHours.close}',
                             style: const TextStyle(fontSize: 20),
                           )
                         ],

@@ -13,10 +13,12 @@ class ReserveTable extends StatefulWidget {
 }
 
 class _ReserveTableState extends State<ReserveTable> {
+  List<String> type = ['', 'Breakfast', 'Lunch', 'Dinner', 'Drinks'];
   int selectedNumber = 1;
   int selectedNumberPeople = 1;
   final TextEditingController peopleController = TextEditingController();
   final TextEditingController notes = TextEditingController();
+
   DateTime dateTime = DateTime.now();
 
   TimeOfDay _timeOfDay = TimeOfDay.now();
@@ -36,6 +38,7 @@ class _ReserveTableState extends State<ReserveTable> {
       });
     });
   }
+    String typ = '';
 
   void _showTimepicker() {
     showTimePicker(
@@ -235,6 +238,58 @@ class _ReserveTableState extends State<ReserveTable> {
                   ),
                 ),
               ),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  'The tpe of the reservation',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 2.0,
+                          blurRadius: 3.0,
+                          color: Colors.black.withOpacity(0.3),
+                          offset: const Offset(3, 3),
+                        ),
+                      ],
+                      border: Border.all(
+                        color: AppColors.red,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: DropdownButton<String>(
+                      value: typ,
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            typ = newValue;
+                          });
+                        }
+                      },
+                      items: List.generate(
+                        5,
+                        (index) => DropdownMenuItem<String>(
+                          value: type[index],
+                          child: Text(type[index]),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               CustomTextField(
                 controller: notes,
                 text: 'Notes',
@@ -252,7 +307,7 @@ class _ReserveTableState extends State<ReserveTable> {
                   ),
                   onPressed: () {
                     var status = addReservation(
-                        selectedNumber, date, selectedNumberPeople);
+                        selectedNumber, date, selectedNumberPeople,typ);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

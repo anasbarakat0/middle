@@ -375,24 +375,72 @@ class RestService extends StatelessWidget {
             );
           }
 
-          return Column(children: [
-            RestaurantWidget(
-              id: restaurantList[0]['_id'],
-              image: '$url/uploads/${restaurantList[0]['Images'][0]}',
-              logo: '$url/uploads/${restaurantList[0]['logo']}',
-              name: restaurantList[0]['name'],
-              address: restaurantList[0]['address'],
-              catigory: restaurantList[0]['categories'],
-              tables: restaurantList[0]['numberoftables'],
-            )
-          ]);
+          return Column(
+            children: [
+              RestaurantWidget(
+                id: restaurantList[0]['_id'],
+                image: '$url/uploads/${restaurantList[0]['Images'][0]}',
+                logo: '$url/uploads/${restaurantList[0]['logo']}',
+                name: restaurantList[0]['name'],
+                address: restaurantList[0]['address'],
+                catigory: restaurantList[0]['categories'],
+                tables: restaurantList[0]['numberoftables'],
+                open: restaurantList[0]['workingHours']['open'],
+                close: restaurantList[0]['workingHours']['close'],
+              ),
+              RestaurantWidget(
+                id: '',
+                image:
+                    'https://static.dezeen.com/uploads/2021/01/burger-king-logo-rebrand-bk-jkr_dezeen_2364_col_4.jpg',
+                logo:
+                    'https://www.designyourway.net/blog/wp-content/uploads/2019/10/s1-3-7.jpg',
+                name: 'Burger King',
+                address: 'Mazeh',
+                catigory: const ['Restaurant', 'Burger', 'Sandwitch'],
+                tables: 15,
+                close: '23:00',
+                open: '09:00',
+              ),
+              RestaurantWidget(
+                id: '',
+                image:
+                    'https://blog.logomyway.com/wp-content/uploads/2020/09/KFC-logo2-store.jpg',
+                logo:
+                    'https://1000logos.net/wp-content/uploads/2019/07/KFC-logo-2006.png',
+                name: 'KFC',
+                address: 'Malki',
+                catigory: const ['Restaurant', 'chiken'],
+                tables: 10,
+                close: '23:00',
+                open: '09:00',
+              ),
+              RestaurantWidget(
+                id: '',
+                image:
+                    'https://franchise.pizzahut.com/images/restaurants_intro.jpg',
+                logo:
+                    'https://logos-world.net/wp-content/uploads/2021/10/Pizza-Hut-Logo-1999-2010.png',
+                name: 'Pizza Hot',
+                address: 'Abo Romaneh',
+                catigory: const [
+                  'pizza',
+                  'Restaurant',
+                ],
+                tables: 16,
+                close: '23:00',
+                open: '09:00',
+              ),
+            ],
+          );
         } else if (snapshot.hasError) {
           return Center(
             child: Text('Failed to fetch data: ${snapshot.error}'),
           );
         } else {
-          return const Center(
-            child: Text('Unknown error occurred.'),
+          return Container(
+            height: MediaQuery.of(context).size.height/1.5,
+            alignment: Alignment.center,
+            child: const CircularProgressIndicator(),
           );
         }
       },
@@ -423,27 +471,25 @@ Future<dynamic> fetchRestaurants() async {
 
   try {
     final response = await http.get(
-    Uri.parse('$url/restaurants'),
-    headers: {
-      "Authorization": "Bearer $token",
-      'Content-Type': 'application/json',
-      'Accept': '*/*',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Connection': 'keep-alive',
-    },
-  );
-  print('your token is :  ++++++++++++++++++++++ ${getIt.get<SharedPreferences>().getString("token") ?? ""}');
-  print(response.body);
-var responsebody = json.decode(response.body);
-print (responsebody);
-  if (response.statusCode == 200) {
-    return responsebody;
-  // } else if (response.statusCode == 500) {
-  //   return responsebody['message'];
-  } else {
-    throw Exception('Failed to load restaurants');
-  }
-  }catch(e){
+      Uri.parse('$url/restaurants'),
+      headers: {
+        "Authorization": "Bearer $token",
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+      },
+    );
+   
+    var responsebody = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return responsebody;
+      // } else if (response.statusCode == 500) {
+      //   return responsebody['message'];
+    } else {
+      throw Exception('Failed to load restaurants');
+    }
+  } catch (e) {
     return 'Error: $e';
   }
 }
